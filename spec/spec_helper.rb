@@ -1,44 +1,36 @@
-require 'spec_helper'
+# This file is copied to spec/ when you run 'rails generate rspec:install'
+require 'spork'
+Spork.prefork do
+ENV["RAILS_ENV"] ||= 'test'
+require File.expand_path("../../config/environment", __FILE__)
+require 'rspec/rails'
+require 'rspec/autorun'
 
-describe "LayoutLinks" do
- 
-  
-  it "should have a home page at '/'" do
-    get '/'
-    response.should have_selector("title", :content => "Home")
-  end
+# Requires supporting ruby files with custom matchers and macros, etc,
+# in spec/support/ and its subdirectories.
+Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
-  it "should have a contact page at '/contact'" do
-    get '/contact'
-    response.should have_selector("title", :content => "Contact")
-  end
+RSpec.configure do |config|
+  # == Mock Framework
+  #
+  # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
+  #
+  # config.mock_with :mocha
+  # config.mock_with :flexmock
+  # config.mock_with :rr
+  config.mock_with :rspec
 
-  it "should have an about page at '/about'" do
-    get '/about'
-    response.should have_selector("title", :content => "About")
-  end
+  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
+  config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
-  it "should have a help page at '/help'" do
-    get '/help'
-    response.should have_selector("title", :content => "Help")
-  end
+  # If you're not using ActiveRecord, or you'd prefer not to run each of your
+  # examples within a transaction, remove the following line or assign false
+  # instead of true.
+  config.use_transactional_fixtures = true
 
-  it "should have a sign-up page at '/signup'" do
-    get '/signup'
-    response.should have_selector("title", :content => "Sign up")
-  end
-
-  it "should have the right links on the layout" do
-    visit root_path
-    response.should have_selector('title', :content => "Home")
-    click_link "About"
-    response.should have_selector('title', :content => "About")
-    click_link "Contact"
-    response.should have_selector('title', :content => "Contact")
-    click_link "Home"
-    response.should have_selector('title', :content => "Home")
-    click_link "Sign up now"
-    response.should have_selector('title', :content => "Sign up")
-    response.should have_selector('a[href="/"]>img')
-  end
+  # If true, the base class of anonymous controllers will be inferred
+  # automatically. This will be the default behavior in future versions of
+  # rspec-rails.
+  config.infer_base_class_for_anonymous_controllers = false
+end
 end
